@@ -10,6 +10,29 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedRadio = 1;
+  final _textController = TextEditingController();
+
+  String enToUz(String en) {
+    String uz = 'Not found';
+    switch (en.toLowerCase()) {
+      case 'apple':
+        uz = 'olma';
+        break;
+      case 'book':
+        uz = 'kitob';
+      case 'code':
+        uz = 'kod';
+      case 'boy':
+        uz = 'bola';
+      case 'girl':
+        uz = 'qiz';
+    }
+    return uz;
+  }
+
+  String uzToEn(String uz) {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +66,30 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text("EN"),
             ),
-            CupertinoButton(child: Text("Submit"), onPressed: () {
-             ScaffoldMessenger.of(context)
-                 .showMaterialBanner(MaterialBanner(
-               backgroundColor: Colors.green,
-                 content: Text(_selectedRadio == 1 ? "Salom" : "Hello"), actions: [
-                   TextButton(onPressed: () {
-                     ScaffoldMessenger.of(context).clearMaterialBanners();
-                   }, child: Text("OK"))
-             ]));
+            TextField(
+              controller: _textController,
+              onChanged: (value) {
+                ScaffoldMessenger.of(context).clearMaterialBanners();
+              },
+              decoration: InputDecoration(
+                  hintText: _selectedRadio == 1 ? "Kiriting..." : "Input"
+              ),
+            ),
+            CupertinoButton(child: Text(
+                _selectedRadio == 1 ? "Bosish" : "Submit"
+            ), onPressed: () {
+              
+              String text = _selectedRadio == 2 ? enToUz(_textController.text) : "Not found";
+              
+              ScaffoldMessenger.of(context)
+                  .showMaterialBanner(
+                  MaterialBanner(
+                  content: Text(text),
+                  actions: [
+                    TextButton(onPressed: () {
+                      ScaffoldMessenger.of(context).clearMaterialBanners();
+                    }, child: Text("OK"))
+                  ]));
             })
           ],
         ),
